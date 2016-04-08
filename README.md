@@ -16,4 +16,5 @@ Create manifest and create the deployment
     bosh-init deploy bosh.yml
 
 Target Bosh Director
+
     bosh target $ELASTIC_IP
