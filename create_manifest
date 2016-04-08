@@ -19,18 +19,18 @@ name: bosh
 
 releases:
 - name: bosh
-  url: https://bosh.io/d/github.com/cloudfoundry/bosh?v=$bosh_version
-  sha1: $bosh_sha1
+  url: https://bosh.io/d/github.com/cloudfoundry/bosh?v=$BOSH_VERSION
+  sha1: $BOSH_SHA1
 - name: bosh-aws-cpi
-  url: https://bosh.io/d/github.com/cloudfoundry-incubator/bosh-aws-cpi-release?v=$aws_cpi_version
-  sha1: $aws_cpi_sha1
+  url: https://bosh.io/d/github.com/cloudfoundry-incubator/bosh-aws-cpi-release?v=$AWS_CPI_VERSION
+  sha1: $AWS_CPI_SHA1
 
 resource_pools:
 - name: vms
   network: private
   stemcell:
-    url: https://bosh.io/d/stemcells/bosh-aws-xen-hvm-ubuntu-trusty-go_agent?v=$stemcell_version
-    sha1: $stemcell_sha1
+    url: https://bosh.io/d/stemcells/bosh-aws-xen-hvm-ubuntu-trusty-go_agent?v=$STEMCELL_VERSION
+    sha1: $STEMCELL_SHA1
   cloud_properties:
     instance_type: m3.xlarge
     ephemeral_disk: {size: 25_000, type: gp2}
@@ -74,7 +74,7 @@ jobs:
     static_ips: [10.0.0.6]
     default: [dns, gateway]
   - name: public
-    static_ips: [$EIP]
+    static_ips: [$ELASTIC_IP]
 
   properties:
     nats:

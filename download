@@ -1,16 +1,16 @@
 #!/bin/bash
 # List of download versions
-export bosh_version=${bosh_version:-255.8}
-export bosh_sha1=${bosh_sha1:-6b12652650b87810dcef1be1f6a6d23f1c0c13a7}
-export aws_cpi_version=${aws_cpi_version:-48}
-export aws_cpi_sha1=${aws_cpi_sha1:-2abfa1bed326238861e247a10674acf4f7ac48b8}
-export stemcell_version=${stemcell_version:-3012}
-export stemcell_sha1=${stemcell_sha1:-3380b55948abe4c437dee97f67d2d8df4eec3fc1}
+export BOSH_VERSION=${BOSH_VERSION:-255.8}
+export BOSH_SHA1=${BOSH_SHA1:-6b12652650b87810dcef1be1f6a6d23f1c0c13a7}
+export AWS_CPI_VERSION=${AWS_CPI_VERSION:-48}
+export AWS_CPI_SHA1=${AWS_CPI_SHA1:-2abfa1bed326238861e247a10674acf4f7ac48b8}
+export STEMCELL_VERSION=${STEMCELL_VERSION:-3012}
+export STEMCELL_SHA1=${STEMCELL_SHA1:-3380b55948abe4c437dee97f67d2d8df4eec3fc1}
 
 # AWS properties
-export bosh_key_name=bosh
-export bosh_private_key_path=./bosh.pem
+export KEY_NAME=bosh
+export PRIVATE_KEY_PATH=./bosh.pem
 
-export security_group=bosh
-export region=us-east-1
-export availability_zone=us-east-1c
+export SECURITY_GROUPS=bosh
+export REGION=us-east-1
+export AVAILABILITY_ZONE=us-east-1c
