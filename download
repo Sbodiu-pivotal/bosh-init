@@ -1,23 +1,16 @@
 #!/bin/bash
+# List of download versions
+export bosh_version=${bosh_version:-255.8}
+export bosh_sha1=${bosh_sha1:-6b12652650b87810dcef1be1f6a6d23f1c0c13a7}
+export aws_cpi_version=${aws_cpi_version:-48}
+export aws_cpi_sha1=${aws_cpi_sha1:-2abfa1bed326238861e247a10674acf4f7ac48b8}
+export stemcell_version=${stemcell_version:-3012}
+export stemcell_sha1=${stemcell_sha1:-3380b55948abe4c437dee97f67d2d8df4eec3fc1}
 
-bosh_version=${bosh_version:-255.8}
-aws_cpi_version=${aws_cpi_version:-48}
-stemcell_version=${stemcell_version:-3012}
+# AWS properties
+export bosh_key_name=bosh
+export bosh_private_key_path=./bosh.pem
 
-cd $HOME/Tools/bosh
-
-if [[ ! -f bosh-${bosh_version}.tgz ]]; then
-  echo "Downloading bosh-${bosh_version}.tgz"
-  curl -Lo bosh-${bosh_version}.tgz \
-    "https://bosh.io/d/github.com/cloudfoundry/bosh?v=${bosh_version}"
-fi
-if [[ ! -f bosh-aws-cpi-release-${aws_cpi_version}.tgz ]]; then
-  echo "Downloading bosh-aws-cpi-release-${aws_cpi_version}.tgz"
-  curl -Lo bosh-aws-cpi-release-${aws_cpi_version}.tgz \
-    "http://bosh.io/d/github.com/cloudfoundry-incubator/bosh-aws-cpi-release?v=${aws_cpi_version}"
-fi
-if [[ ! -f light-bosh-stemcell-${stemcell_version}-aws-xen-ubuntu-trusty-go_agent.tgz ]]; then
-  echo "Downloading light-bosh-stemcell-${stemcell_version}-aws-xen-ubuntu-trusty-go_agent.tgz"
-  curl -Lo light-bosh-stemcell-${stemcell_version}-aws-xen-ubuntu-trusty-go_agent.tgz \
-    https://d26ekeud912fhb.cloudfront.net/bosh-stemcell/aws/light-bosh-stemcell-${stemcell_version}-aws-xen-ubuntu-trusty-go_agent.tgz
-fi
+export security_group=bosh
+export region=us-east-1
+export availability_zone=us-east-1c

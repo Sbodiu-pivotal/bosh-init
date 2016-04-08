@@ -2,15 +2,14 @@
 
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
+source download
+
 if [[
-"${EIP}X" == "X" ||
+"${ELASTIC_IP}X" == "X" ||
 "${ACCESS_KEY_ID}X" == "X" ||
 "${SECRET_ACCESS_KEY}X" == "X" ||
-"${KEY_NAME}X" == "X" ||
-"${PRIVATE_KEY_PATH}X" == "X" ||
-"${SUBNET_ID}X" == "X" ||
-"${SECURITY_GROUP}X" == "X" ]]; then
-  echo "USAGE: EIP=xxx ACCESS_KEY_ID=xxx SECRET_ACCESS_KEY=xxx KEY_NAME=xxx PRIVATE_KEY_PATH=xxx SECURITY_GROUP=xxx create_manifest"
+"${SUBNET_ID}X" == "X" ]]; then
+  echo "USAGE: ELASTIC_IP=xxx ACCESS_KEY_ID=xxx SECRET_ACCESS_KEY=xxx SUBNET_ID=xxx create_manifest"
   exit 1
 fi
 
@@ -20,22 +19,22 @@ name: bosh
 
 releases:
 - name: bosh
-  url: https://bosh.io/d/github.com/cloudfoundry/bosh?v=255.8
-  sha1: 6b12652650b87810dcef1be1f6a6d23f1c0c13a7
+  url: https://bosh.io/d/github.com/cloudfoundry/bosh?v=$bosh_version
+  sha1: $bosh_sha1
 - name: bosh-aws-cpi
-  url: https://bosh.io/d/github.com/cloudfoundry-incubator/bosh-aws-cpi-release?v=48
-  sha1: 2abfa1bed326238861e247a10674acf4f7ac48b8
+  url: https://bosh.io/d/github.com/cloudfoundry-incubator/bosh-aws-cpi-release?v=$aws_cpi_version
+  sha1: $aws_cpi_sha1
 
 resource_pools:
 - name: vms
   network: private
   stemcell:
-    url: https://bosh.io/d/stemcells/bosh-aws-xen-hvm-ubuntu-trusty-go_agent?v=3012
-    sha1: 3380b55948abe4c437dee97f67d2d8df4eec3fc1
+    url: https://bosh.io/d/stemcells/bosh-aws-xen-hvm-ubuntu-trusty-go_agent?v=$stemcell_version
+    sha1: $stemcell_sha1
   cloud_properties:
     instance_type: m3.xlarge
     ephemeral_disk: {size: 25_000, type: gp2}
-    availability_zone: us-east-1c
+    availability_zone: $AVAILABILITY_ZONE
 
 disk_pools:
 - name: disks
@@ -49,7 +48,7 @@ networks:
   - range: 10.0.0.0/24
     gateway: 10.0.0.1
     dns: [10.0.0.2]
-    cloud_properties: {subnet: $SUBNET_ID}
+    cloud_properties: {subnet: $SUBNET_ID} 
 - name: public
   type: vip
 
@@ -75,7 +74,7 @@ jobs:
     static_ips: [10.0.0.6]
     default: [dns, gateway]
   - name: public
-    static_ips: [$EIP] 
+    static_ips: [$EIP]
 
   properties:
     nats:
@@ -132,9 +131,9 @@ jobs:
     aws: &aws
       access_key_id: $ACCESS_KEY_ID 
       secret_access_key: $SECRET_ACCESS_KEY
-      default_key_name: bosh
-      default_security_groups: [bosh]
-      region: us-east-1
+      default_key_name: $KEY_NAME
+      default_security_groups: [$SECURITY_GROUPS]
+      region: $REGION
 
     agent: {mbus: "nats://nats:nats-password@10.0.0.6:4222"}
 
@@ -144,15 +143,17 @@ cloud_provider:
   template: {name: aws_cpi, release: bosh-aws-cpi}
 
   ssh_tunnel:
-    host: $EIP
+    host: $ELASTIC_IP 
     port: 22
     user: vcap
-    private_key: ./bosh.pem # Path relative to this manifest file
+    private_key: $PRIVATE_KEY_PATH # Path relative to this manifest file
 
-  mbus: "https://mbus:mbus-password@$EIP:6868"
+  mbus: "https://mbus:mbus-password@$ELASTIC_IP:6868" 
 
   properties:
     aws: *aws
     agent: {mbus: "https://mbus:mbus-password@0.0.0.0:6868"}
     blobstore: {provider: local, path: /var/vcap/micro_bosh/data/cache}
     ntp: *ntp
+
+EOF
