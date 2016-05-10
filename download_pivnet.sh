@@ -1,4 +1,6 @@
 #!/bin/bash
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Download tiles from Pivotal Network and upload them to OpsManager
 
 set -e
 
@@ -7,7 +9,7 @@ if [[
 "${UAA_ACCESS_TOKEN}X" == "X" ||
 "${DOWNLOAD_URL}X" == "X" ||
 "${OPSMGR_HOST}X" == "X" ]]; then
-  echo "USAGE: PIVNET_TOKEN=xxx UAA_ACCESS_TOKEN=xxx DOWNLOAD_URL=xxx OPSMGR_HOST=xxx download-p-cf.sh"
+  echo "USAGE: PIVNET_TOKEN=xxx UAA_ACCESS_TOKEN=xxx DOWNLOAD_URL=xxx OPSMGR_HOST=xxx download_pivnet.sh"
   exit 1
 fi
 
